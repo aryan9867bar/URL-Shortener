@@ -7,9 +7,21 @@ A high-performance URL shortening service built with **FastAPI**, **PostgreSQL**
 ## 🏗️ Architecture
 
 ```
-Client → FastAPI → Redis Cache (hit) → Return URL
-                 → Redis Cache (miss) → PostgreSQL → Cache result → Return URL
+Client → FastAPI
+
+GET /{code}
+   → Redis (Cache HIT) → Return URL
+   → Redis (Cache MISS) → PostgreSQL → Cache → Return URL
+
+POST /shorten
+   → Check existing URL
+   → Generate Snowflake ID
+   → Encode (Base62)
+   → Store in DB
+   → Cache in Redis
 ```
+
+![URL Shortener Architecture](architecture/final_architecture.png)
 
 - **FastAPI** — Async REST API framework
 - **PostgreSQL** — Persistent storage for URL mappings
@@ -32,9 +44,8 @@ Client → FastAPI → Redis Cache (hit) → Return URL
 ### Step 1 — Clone / Extract the project
 
 ```bash
-# If you have the zip:
-unzip URL-Shortener-main.zip
-cd URL-Shortener-main
+clone/extract the project
+cd URL-Shortener
 ```
 
 ### Step 2 — Start PostgreSQL and Redis via Docker
@@ -44,7 +55,7 @@ docker-compose up -d
 ```
 
 This starts:
-- PostgreSQL on `localhost:5432` (db: `url_shortener`, user: `postgres`, password: `password`)
+- PostgreSQL on `localhost:5432` (db: `url_shortener`, user: `postgres`, password: `[PASSWORD]`)
 - Redis on `localhost:6379`
 
 Verify containers are running:
@@ -67,7 +78,7 @@ The `.env.local` file is already included with defaults for local development:
 
 ```env
 ENV=local
-DATABASE_URL=postgresql+asyncpg://postgres:password@localhost:5432/url_shortener
+DATABASE_URL=postgresql+asyncpg://postgres:[PASSWORD]@localhost:5432/url_shortener
 REDIS_HOST=127.0.0.1
 REDIS_PORT=6379
 REDIS_SSL=false
@@ -208,11 +219,4 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
 
 ---
 
-## 🧰 Troubleshooting
 
-| Problem | Solution |
-|---|---|
-| `Connection refused` on PostgreSQL | Ensure Docker containers are running: `docker-compose ps` |
-| `Redis connection error` | Check Redis is up: `docker exec -it url_shortener_redis redis-cli ping` |
-| `ModuleNotFoundError` | Make sure your venv is activated and `pip install -r requirements.txt` ran successfully |
-| Port already in use | Stop conflicting services or change the port in `docker-compose.yml` |
