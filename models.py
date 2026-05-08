@@ -14,4 +14,4 @@ class Short(Base):
 
 # Request Schema (input validation)
 class URLRequest(BaseModel):
-    url: HttpUrl   # validates proper URL format
+    url: str   # validates proper URL format
