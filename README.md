@@ -1,10 +1,10 @@
-# 🔗 URL Shortener
+# URL Shortener
 
 A high-performance URL shortening service built with **FastAPI**, **PostgreSQL**, and **Redis**. It uses Snowflake IDs for unique code generation and Base62 encoding to produce compact, collision-free short codes. Redis is used as a caching layer with a distributed lock mechanism to prevent cache stampedes.
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 Client → FastAPI
@@ -31,7 +31,7 @@ POST /shorten
 
 ---
 
-## 📋 Prerequisites
+## Prerequisites
 
 - Python 3.10+
 - Docker & Docker Compose (for PostgreSQL and Redis)
@@ -39,7 +39,7 @@ POST /shorten
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Step 1 — Clone / Extract the project
 
@@ -120,7 +120,7 @@ Interactive API docs: **http://127.0.0.1:8000/docs**
 
 ---
 
-## 📡 API Endpoints
+## API Endpoints
 
 ### `POST /shorten` — Shorten a URL
 
@@ -159,7 +159,7 @@ curl http://127.0.0.1:8000/aB3xZ9
 
 ---
 
-## ⚙️ Rate Limits
+## Rate Limits
 
 | Endpoint    | Limit       |
 |-------------|-------------|
@@ -168,7 +168,7 @@ curl http://127.0.0.1:8000/aB3xZ9
 
 ---
 
-## 🗂️ Project Structure
+## Project Structure
 
 ```
 URL-Shortener-main/
@@ -186,7 +186,7 @@ URL-Shortener-main/
 
 ---
 
-## 🛑 Stopping the Services
+## Stopping the Services
 
 ```bash
 # Stop Docker containers
@@ -198,7 +198,7 @@ docker-compose down -v
 
 ---
 
-## 🌐 Production Deployment Notes
+## Production Deployment Notes
 
 For production, update `.env.local` (or set real environment variables):
 
